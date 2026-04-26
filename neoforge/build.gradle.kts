@@ -71,9 +71,6 @@ dependencies {
     // Example mod dependency using a file as dependency
     // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
 
-    // Example project dependency using a sister or child project:
-    // implementation project(":myproject")
-
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
@@ -104,7 +101,7 @@ tasks.named<ProcessResources>("processResources") {
 //    ]
     // Or automaticaly map properties from gradle.properties
     // And manually change/remap something if u need to
-    var replaceProperties = project.properties.filter { it.value is String };
+    var replaceProperties = project.properties.filter { it.value is String }
 
     inputs.properties(replaceProperties)
 
