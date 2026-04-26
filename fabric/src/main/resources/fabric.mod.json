@@ -13,8 +13,8 @@
 
   "environment": "*",
   "entrypoints": {
-    "client": ["${group}.client.ExampleModFabricClient"],
-    "main": ["${group}.ExampleModFabric"]
+    "client": ["com.example.mc.examplemod.fabric.client.ExampleModFabricClient"],
+    "main": ["com.example.mc.examplemod.fabric.ExampleModFabric"]
   },
 
   "mixins": [
