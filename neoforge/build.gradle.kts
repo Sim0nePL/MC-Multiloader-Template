@@ -7,7 +7,30 @@ val modId = project.findProperty("id") as String // id from gradle.properties
 
 
 base {
-    archivesName = "${rootProject.name}-neoforge-${version}"
+    archivesName = "${rootProject.name}-neoforge"
+}
+
+dependencies {
+    // Example mod dependency with JEI
+    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
+    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
+    // compileOnly "mezz.jei:jei-${mc_version}-forge-api:${jei_version}"
+    // runtimeOnly "mezz.jei:jei-${mc_version}-forge:${jei_version}"
+
+    // Example mod dependency using a mod jar from ./libs with a flat dir repository
+    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
+    // The group id is ignored when searching -- in this case, it is "blank"
+    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
+
+    // Example mod dependency using a file as dependency
+    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
+
+    // For more info:
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+    // Implementation of :common module
+    implementation(project(":common"))
 }
 
 neoForge {
@@ -57,34 +80,6 @@ neoForge {
     }
 }
 
-dependencies {
-    // Example mod dependency with JEI
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // compileOnly "mezz.jei:jei-${mc_version}-forge-api:${jei_version}"
-    // runtimeOnly "mezz.jei:jei-${mc_version}-forge:${jei_version}"
-
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
-
-    // Example mod dependency using a file as dependency
-    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
-
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-    // Implementation of :common module
-    implementation(project(":common"))
-}
-
-//tasks.withType<JavaCompile>().configureEach {
-//    sourceSets.main.get().java.srcDirs += project(":common").sourceSets.main.get().java.srcDirs
-//    sourceSets.main.get().resources.srcDirs += project(":common").sourceSets.main.get().resources.srcDirs
-//}
-
 tasks.named<ProcessResources>("processResources") {
     // You can manually map properties using this map
     val replaceProperties = mapOf(
@@ -108,5 +103,15 @@ tasks.named<ProcessResources>("processResources") {
     filesMatching(listOf("META-INF/neoforge.mods.toml", "${modId}.neoforge.mixins.json")) {
         expand(replaceProperties)
     }
+}
 
+tasks.named<Jar>("jar") {
+    from(project(":common").sourceSets.main.get().output)
+
+    // Copy the LICENSE file from rootProject to root of your .jar file
+    from(rootProject.file("LICENSE")).into("/")
+
+    // If both projects have the same file (like a license or icon),
+    // this keeps the one from the :neoforge project.
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
