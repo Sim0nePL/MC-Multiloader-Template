@@ -100,7 +100,7 @@ tasks.named<ProcessResources>("processResources") {
 
     inputs.properties(replaceProperties)
 
-    filesMatching(listOf("META-INF/neoforge.mods.toml", "${modId}.neoforge.mixins.json")) {
+    filesMatching(listOf("META-INF/neoforge.mods.toml")) {
         expand(replaceProperties)
     }
 }
