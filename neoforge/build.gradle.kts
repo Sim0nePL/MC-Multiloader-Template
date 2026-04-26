@@ -2,8 +2,9 @@ plugins {
     id("net.neoforged.moddev")
 }
 
-val modId = project.findProperty("mod_id") as String // id from gradle.properties
-val group = "${project.group}.neoforge" // change group -> group.neoforge
+group = "${project.group}.neoforge" // change com.group -> com.group.neoforge
+val modId = project.findProperty("id") as String // id from gradle.properties
+
 
 base {
     archivesName = "${rootProject.name}-neoforge-${version}"
@@ -86,26 +87,25 @@ dependencies {
 
 tasks.named<ProcessResources>("processResources") {
     // You can manually map properties using this map
-//    var replaceProperties = [
-//            minecraft_version      : minecraft_version,
-//            minecraft_version_range: minecraft_version_range,
-//            neo_version            : neo_version,
-//            neo_version_range      : neo_version_range,
-//            neo_loader_version     : neo_loader_version,
-//            mod_id                 : mod_id,
-//            mod_name               : rootProject.name,
-//            mod_license            : mod_license,
-//            mod_version            : mod_version,
-//            mod_authors            : mod_authors,
-//            mod_description        : mod_description
-//    ]
+    val replaceProperties = mapOf(
+        "mod_id" to modId,
+        "mod_name" to rootProject.name,
+        "group" to project.group,
+        "version" to project.findProperty("version"),
+        "license" to project.findProperty("license"),
+        "authors" to project.findProperty("authors"),
+        "description" to project.findProperty("description"),
+        "minecraft_version_range" to project.findProperty("minecraft_version_range"),
+        "neoforge_version_range" to project.findProperty("neoforge_version_range"),
+        "neoforge_loader_version" to project.findProperty("neoforge_loader_version"),
+    )
     // Or automaticaly map properties from gradle.properties
     // And manually change/remap something if u need to
-    var replaceProperties = project.properties.filter { it.value is String }
+//    var replaceProperties = project.properties.filter { it.value is String }
 
     inputs.properties(replaceProperties)
 
-    filesMatching("META-INF/neoforge.mods.toml") {
+    filesMatching(listOf("META-INF/neoforge.mods.toml", "${modId}.neoforge.mixins.json")) {
         expand(replaceProperties)
     }
 
