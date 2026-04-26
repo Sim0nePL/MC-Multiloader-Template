@@ -1,6 +1,7 @@
 package com.example.mc.examplemod.neoforge;
 
 import com.example.mc.examplemod.ExampleMod;
+import com.example.mc.examplemod.items.ExampleModItems;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -42,6 +43,7 @@ public class ExampleModNeoForge
     public ExampleModNeoForge(IEventBus modEventBus, ModContainer modContainer)
     {
         ExampleMod.init();
+        ExampleModItems.ITEMS.registerToBus(modEventBus);
 
         // Register the commonSetup method for modloading
 //        modEventBus.addListener(this::commonSetup);
@@ -55,6 +57,5 @@ public class ExampleModNeoForge
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         // Some common setup code
-//        ExampleMod.init();
     }
 }
