@@ -9,3 +9,4 @@ pluginManagement {
 rootProject.name = "ExampleMod"
 
 include("common")
+include("neoforge")

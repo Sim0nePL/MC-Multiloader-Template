@@ -2,8 +2,6 @@ plugins {
     id("net.neoforged.moddev")
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
 neoForge {
     neoFormVersion = project.findProperty("neoform_version") as String
 

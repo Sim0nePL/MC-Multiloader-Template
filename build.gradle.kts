@@ -3,12 +3,12 @@ plugins {
     id("net.neoforged.moddev") version "2.0.141" apply false
 }
 
+// Set java version
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
 subprojects {
     // Apply plugins
     apply(plugin = "java")
-
-    // Set java version
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
     // Set encoding to UTF-8
     tasks.withType<JavaCompile>().configureEach {
